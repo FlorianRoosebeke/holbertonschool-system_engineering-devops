@@ -1,0 +1,16 @@
+Infrastructure description
+This scaled infrastructure adds one more server and a second HAProxy load balancer configured in a cluster with the first one. Components are split by role: one or more servers only run the web server (Nginx), others only run the application server and code, and a separate server (or cluster) runs the database (MySQL).
+
+Why each additional element
+The extra server is added to increase capacity and handle more traffic when the system scales.
+
+The second HAProxy load balancer is added and clustered with the first one to remove the load balancer as a single point of failure and improve high availability.
+
+Splitting components (web server, application server, database) on their own servers allows each layer to scale independently, makes the architecture clearer, and limits the impact if one server fails or is overloaded.
+
+Role of separated components
+The web server layer (Nginx servers) focuses on serving HTTP requests and static files, and on forwarding dynamic requests to the application servers.
+
+The application server layer runs the business logic and processes requests using the deployed code base.
+
+The database layer (MySQL server or cluster) stores and serves persistent data, and can be scaled or protected with its own replication or clustering mechanisms.
