@@ -1,0 +1,19 @@
+Infrastructure description
+This infrastructure still uses one HAProxy load balancer and two backend servers to host www.foobar.com, but it is now secured, serves HTTPS traffic, and is monitored. Each server runs Nginx, the application server, the application files, a MySQL database, a firewall, and a monitoring client, and the load balancer also has a firewall and an SSL certificate.
+
+Why each additional element
+Three firewalls are added (one in front of each server) to filter incoming and outgoing traffic and only allow required ports and IPs.
+
+The SSL certificate is added so www.foobar.com can serve traffic over HTTPS and encrypt data between clients and the load balancer.
+
+Three monitoring clients are added (one per server) to collect metrics and logs and send them to a central monitoring service like Sumologic.
+
+Purpose of security and monitoring
+Firewalls are used to protect the infrastructure by blocking unauthorized access and limiting exposed services. HTTPS is used so that the traffic is encrypted, which protects user data and prevents attackers from reading or modifying requests in transit. Monitoring is used to observe the health and performance of the system, detect errors, and create alerts.
+
+The monitoring tool collects data by running an agent on each server that sends metrics such as CPU, memory, disk, logs, and custom application metrics to the monitoring backend. To monitor web server QPS, you can expose metrics from Nginx (for example with a status module or log-based metrics), have the monitoring agent collect them, and create a dashboard or alert based on the number of HTTP requests per second.
+
+Issues with this infrastructure
+Terminating SSL at the load balancer is an issue because the traffic between the load balancer and the backend servers is no longer encrypted, which exposes internal traffic to potential attacks inside the network. Having only one MySQL server that can accept writes is a problem because it is a single point of failure for write operations and can become a performance bottleneck.
+
+Having servers with all the same components (database, web server, application server) can also be problematic because it mixes roles, makes scaling individual layers harder, and increases the blast radius if a server is compromised or misconfigured.
