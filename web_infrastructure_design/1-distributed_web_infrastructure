@@ -1,0 +1,22 @@
+Infrastructure description
+This infrastructure hosts www.foobar.com using one HAProxy load balancer in front of two backend servers. Each backend server runs Nginx as a web server, an application server, the application code base, and a MySQL database.
+
+Why each element
+HAProxy distributes client traffic across the two servers and increases availability.
+
+The two servers provide redundancy so the website can still work if one server fails.
+
+Nginx serves HTTP requests and forwards dynamic requests to the application server.
+
+The application server runs the business logic using the application files.
+
+MySQL stores the persistent data of the application.
+
+Load balancer behavior
+The load balancer uses a round-robin algorithm, sending each new request to the next available server in turn. Both servers are active at the same time, so this is an Active-Active setup; in Active-Passive, only one server handles traffic while the other stays on standby and takes over only if the active one fails.
+
+Database replication
+In a Primary-Replica cluster, the Primary database handles all writes and propagates changes to the Replica, which mainly handles reads or backup. For the application, the Primary is the main source of data, and the Replica is a synchronized copy used to offload reads or provide failover.
+
+Main issues
+There are still single points of failure such as the only load balancer and the Primary database. Security is weak because there is no firewall and no HTTPS, and there is no monitoring to detect failures or performance problems
