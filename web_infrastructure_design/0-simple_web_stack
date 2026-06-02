@@ -1,0 +1,159 @@
+# Understanding a Basic Web Infrastructure
+
+## What Is a Server?
+
+A server is a physical machine, virtual machine, or software application that provides services, resources, or functionality to other devices or programs, known as **clients**.
+
+---
+
+## What Is the Purpose of a Domain Name?
+
+A domain name is a human-readable address that allows users to access a website without having to remember its numerical IP address.
+
+For example:
+
+`www.foobar.com → 8.8.8.8`
+
+The domain name is translated into an IP address through the Domain Name System (DNS).
+
+---
+
+## What DNS Record Links a Domain Name to an IP Address?
+
+An **A Record (Address Record)** maps a domain name directly to an IPv4 address.
+
+Example:
+
+`www.foobar.com → A Record → 8.8.8.8`
+
+When a user enters a domain name into a browser, DNS uses this record to determine the server's IP address.
+
+---
+
+## What Is the Role of the Web Server?
+
+The web server (e.g., Nginx) acts as the entry point for incoming HTTP requests.
+
+Its primary responsibilities are:
+
+* Serving static content such as images, CSS files, JavaScript files, and documents.
+* Forwarding dynamic requests to the application server for processing.
+* Managing client connections and request routing.
+
+By handling static content directly, the web server reduces the workload on the application server and improves overall performance.
+
+---
+
+## What Is the Role of the Application Server?
+
+The application server contains and executes the business logic of the application.
+
+Its responsibilities include:
+
+* Processing incoming requests.
+* Executing application code.
+* Communicating with the database when data is required.
+* Generating dynamic responses that are returned to the user.
+
+Unlike the web server, the application server is responsible for the application's behavior and functionality.
+
+---
+
+## What Is the Role of the Database?
+
+The database is responsible for storing and organizing data in a persistent manner.
+
+Its main functions are:
+
+* Storing application data.
+* Retrieving information through SQL queries.
+* Updating and managing records.
+* Ensuring data consistency and integrity.
+
+The application server interacts with the database whenever data needs to be read or modified.
+
+---
+
+## Which Protocol Is Used Between the User and the Server?
+
+Communication between a user's browser and the web server is typically performed using the **HTTP (HyperText Transfer Protocol)** or its secure version, **HTTPS**.
+
+This protocol defines how requests and responses are exchanged over the internet.
+
+---
+
+## What Is a Single Point of Failure (SPOF)?
+
+A **Single Point of Failure (SPOF)** is any component whose failure causes the entire system or service to become unavailable.
+
+Examples include:
+
+* A single web server.
+* A single database server.
+* A single network device.
+
+Minimizing SPOFs is a key objective when designing highly available systems.
+
+---
+
+## Why Is a Single Server Considered a SPOF?
+
+In a single-server architecture, all critical components are hosted on the same machine:
+
+* Web server
+* Application server
+* Database
+
+If that server experiences a hardware failure, software crash, or network issue, the entire website becomes unavailable.
+
+Since no backup server exists, users lose access to the service until the issue is resolved.
+
+---
+
+## What Happens During a Deployment or Server Restart?
+
+When new code is deployed, services such as Nginx or the application server may need to be restarted.
+
+In a single-server environment:
+
+* Incoming requests cannot be processed during the restart.
+* Users may experience temporary downtime.
+* Even a brief interruption can negatively affect the user experience.
+
+This is one of the limitations of hosting the entire application on a single machine.
+
+---
+
+## What Happens If Traffic Increases Dramatically?
+
+Every server has finite resources:
+
+* CPU
+* Memory (RAM)
+* Disk I/O
+* Network bandwidth
+
+If a website suddenly receives thousands of concurrent requests, the server may become overloaded.
+
+Possible consequences include:
+
+* Increased response times.
+* Request timeouts.
+* Service degradation.
+* Complete application crashes.
+
+Because all services run on a single machine, scaling is difficult. Additional servers cannot simply be added without redesigning the infrastructure to support load distribution and redundancy.
+
+---
+
+## Key Limitations of a Single-Server Architecture
+
+A single-server setup is simple and cost-effective, making it suitable for small projects and development environments. However, it introduces several challenges:
+
+* Single Point of Failure (SPOF).
+* Downtime during deployments and maintenance.
+* Limited scalability.
+* Resource contention between services.
+* Reduced reliability under heavy traffic.
+
+As an application grows, organizations typically move toward distributed architectures that provide redundancy, load balancing, and horizontal scalability.
